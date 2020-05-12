@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="56e20302-0ba3-4ac7-a848-476e4a95a7a3" name="Default Changelist" comment="添加role">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/view-server/src/main/java/com/view/client/ClientFeign.java" beforeDir="false" afterPath="$PROJECT_DIR$/view-server/src/main/java/com/view/client/ClientFeign.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/view-server/view-server.iml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,6 +215,7 @@
       <workItem from="1589282333424" duration="985000" />
       <workItem from="1589283334679" duration="649000" />
       <workItem from="1589283997180" duration="14160000" />
+      <workItem from="1589300907163" duration="92000" />
     </task>
     <task id="LOCAL-00001" summary="添加role">
       <created>1589299571932</created>

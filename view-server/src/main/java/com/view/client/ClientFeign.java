@@ -28,7 +28,7 @@ public interface ClientFeign {
    public void deleteUser(@PathVariable(value = "id")int id);
 
    /*
-   * role
+   * role角色
    * */
 
    @GetMapping("/role")
