@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: view-server
+  thymeleaf:
+    mode: LEGACYHTML5
+    encoding: UTF-8
+    content-type: text/html
+    cache: false
+server:
+  port: 8889
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8081/eureka/
+

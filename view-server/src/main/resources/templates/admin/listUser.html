@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<script src="https://how2j.cn/study/js/jquery/2.0.0/jquery.min.js"></script>
+<link href="https://how2j.cn/study/css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+<script src="https://how2j.cn/study/js/bootstrap/3.3.6/bootstrap.min.js"></script>
+<script src="https://how2j.cn/study/vue.min.js"></script>
+<script src="js/axios/0.17.1/axios.min.js"></script>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<script>
+
+    //判断是否为空
+    function checkEmpty(value,text){
+
+        if(null==value || value.length==0){
+            alert(text+ "不能为空");
+            return false;
+        }
+        return true;
+    }
+
+    //获取地址栏参数的函数
+    function getUrlParms(para){
+        var search=location.search; //页面URL的查询部分字符串
+        var arrPara=new Array(); //参数数组。数组单项为包含参数名和参数值的字符串，如“para=value”
+        var arrVal=new Array(); //参数值数组。用于存储查找到的参数值
+
+        if(search!=""){
+            var index=0;
+            search=search.substr(1); //去除开头的“?”
+            arrPara=search.split("&");
+
+            for(i in arrPara){
+                var paraPre=para+"="; //参数前缀。即参数名+“=”，如“para=”
+                if(arrPara[i].indexOf(paraPre)==0&& paraPre.length<arrPara[i].length){
+                    arrVal[index]=decodeURI(arrPara[i].substr(paraPre.length)); //顺带URI解码避免出现乱码
+                    index++;
+                }
+            }
+        }
+
+        if(arrVal.length==1){
+            return arrVal[0];
+        }else if(arrVal.length==0){
+            return null;
+        }else{
+            return arrVal;
+        }
+    }
+
+    //判断是否数字 (小数和整数)
+    function checkNumber(value, text){
+
+        if(value.length==0){
+            alert(text+ "不能为空");
+            return false;
+        }
+        if(isNaN(value)){
+            alert(text+ "必须是数字");
+            return false;
+        }
+        return true;
+    }
+    //判断是否整数
+    function checkInt(value, text){
+
+        if(value.length==0){
+            alert(text+ "不能为空");
+            return false;
+        }
+        if(parseInt(value)!=value){
+            alert(text+ "必须是整数");
+            return false;
+        }
+        return true;
+    }
+
+    //确实是否要删除
+    function checkDeleteLink(){
+        var confirmDelete = confirm("确认要删除");
+        if(confirmDelete)
+            return true;
+        return false;
+    }
+    //跳转函数
+    function jump(page,vue){
+        if('first'== page && !vue.pagination.first)
+            vue.list(0);
+
+        else if('pre'== page &&	vue.pagination.hasPrevious )
+            vue.list(vue.pagination.number-1);
+
+        else if('next'== page && vue.pagination.hasNext)
+            vue.list(vue.pagination.number+1);
+
+        else if('last'== page && !vue.pagination.last)
+            vue.list(vue.pagination.totalPages-1);
+    }
+    //跳转函数
+    function jumpByNumber(start,vue){
+        if(start!=vue.pagination.number)
+            vue.list(start);
+    }
+
+    //自己的方法
+    function deleteUser(){
+        alert("aaa");
+    }
+
+    $(function(){
+        var data4Vue = {
+            uri:'showUsersPage',
+            pagination:{},
+            beans: []
+        };
+
+        //ViewModel
+        var vue = new Vue({
+            el: '#workingArea',
+            data: data4Vue,
+            mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+               this.list(0);
+            },
+            methods: {
+                list:function(start){
+                    var url =  this.uri+ "?start="+start;
+                    axios.get(url).then(function(response) {
+                        vue.pagination = response.data;
+                        vue.beans = response.data.content   ;
+                    });
+                },
+                jump: function(page){
+                    jump(page,vue); //定义在adminHeader.html 中
+                },
+                jumpByNumber: function(start){
+                    jumpByNumber(start,vue);
+                },
+                deleteUser:function (id) {
+
+                    if(!checkDeleteLink())
+                        return;
+                    var url = "deleteUser/"+id;
+                    axios.delete(url).then(function(response){
+                        if(0!=response.data.length){
+                            alert(response.data);
+                        }
+                        else{
+                            vue.list(0);
+                        }
+                    });
+
+                }
+
+            }
+        });
+    });
+</script>
+<style>
+
+    div.alert-info{
+        height: 60px;
+    }
+
+    h3.blogTitle{
+        padding-left: 500px;
+        padding-top: -10px;
+        margin-top: 3px;
+    }
+
+    h1.label{
+        height: 60px;
+        width: 60px;
+    }
+
+    ul.pagination{
+        margin-left: 540px;
+        margin-top: 250px;
+    }
+
+    div.buttonR{
+        float: right;
+        margin-top: -45px;
+    }
+
+    button.label{
+        height: 25px;
+        width: 50px;
+    }
+
+    div.listDataTableDiv{
+        margin-top: 62px;
+    }
+
+    div.nav{
+        margin-bottom: 0px;
+        width: 1500px;
+
+        position: absolute;
+    }
+
+
+
+</style>
+
+
+<div id="workingArea">
+    <div class="alert alert-info">
+        <h3 class="blogTitle">博客后台管理</h3>
+        <div class="buttonR">
+            <button class="label label-success">登陆</button>
+            <button class="label label-danger">退出</button>
+        </div>
+    </div>
+    <div class="nav">
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="#">用户管理</a></li>
+            <li role="presentation"><a href="#">权限管理</a></li>
+            <li role="presentation"><a href="/admin_role_list">角色管理</a></li>
+        </ul>
+    </div>
+    <div class="listDataTableDiv">
+        <table class="table table-striped table-bordered table-hover  table-condensed">
+            <thead>
+            <tr class="success">
+                <th>ID</th>
+                <th>用户名</th>
+                <th>密码</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="bean in beans">
+                <td>{{bean.id}}</td>
+                <td>{{bean.userAccount}}</td>
+                <td>{{bean.userPassword}}</td>
+                <td>
+                    <button class="btn btn-success">修改</button>
+                    <button class="btn btn-danger" @click="deleteUser(bean.id)">删除</button>
+                </td>
+            </tr>
+
+
+
+            </tbody>
+
+
+        </table>
+
+
+    </div>
+
+
+    <div class="pageDiv" th:fragment="html">
+        <nav>
+            <ul class="pagination">
+                <li :class="{ disabled: pagination.first }">
+                    <a  href="#nowhere" @click="jump('first')">«</a>
+                </li>
+                <li :class="{ disabled: !pagination.hasPrevious }">
+                    <a  href="#nowhere" @click="jump('pre')">‹</a>
+                </li>
+
+                <li  v-for="i in pagination.navigatepageNums">
+                    <a href="#nowhere" @click="jumpByNumber(i-1)" >
+                        {{i}}
+                    </a>
+                </li>
+
+                <li :class="{ disabled: !pagination.hasNext }">
+                    <a  href="#nowhere" @click="jump('next')">›</a>
+                </li>
+                <li :class="{ disabled: pagination.last }">
+                    <a  href="#nowhere" @click="jump('last')"> »</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+</div>
+
+
+
+
+</body>
+</html>

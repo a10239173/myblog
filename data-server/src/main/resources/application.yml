@@ -1,0 +1,33 @@
+server:
+  port: 8888
+#spring配置
+spring:
+  #2.数据库连接池
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/blog?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: admin
+  #3.JPA
+  jpa:
+    database: mysql
+    show-sql: true
+    open-in-view: true
+  application:
+    name: data-server
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:
+    timeout: 20000
+    pool:
+      max-active: 8 # 连接池最大连接数（使用负值表示没有限制）
+      min-idle: 0  #最小空闲连接:连接池中容许保持空闲状态的最小连接数量,低于这个数量将创建新的连接
+      max-idle: 8 #最大空闲连接:连接池中容许保持空闲状态的最大连接数量,超过的空闲连接将被释放
+      max-wait: -1 # 连接池最大阻塞等待时间（使用负值表示没有限制）
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8081/eureka/
+
