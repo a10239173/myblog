@@ -109,8 +109,12 @@
     $(function(){
         var data4Vue = {
             uri:'showUsersPage',
-            pagination:{},
-            beans: []
+            beans: [],
+            /*bean: { id: 0, userAccount: '',userPassword: ''},*/
+            /*userAccount:'',
+            userPassword:'',*/
+            bean:{id:0,userAccount: '',userPassword: ''},
+            pagination:{}
         };
 
         //ViewModel
@@ -147,6 +151,27 @@
                             vue.list(0);
                         }
                     });
+
+                },
+                addUser:function () {
+
+                    var url = "addUser";
+                    /*var formData = new FormData();
+                    formData.append("userAccount",this.userAccount);
+                    formData.append("userPassword",this.userPassword);*/
+
+                    var userAccount = this.bean.userAccount;
+                    var userPassword = this.bean.userPassword;
+
+                    axios.post(url,{
+                        userAccount:userAccount,
+                        userPassword:userPassword
+                    }).then(function (response) {
+                        vue.list(0);
+                       vue.bean = {id:0,userAccount:'',userPassword:''};
+                    });
+
+
 
                 }
 
@@ -196,7 +221,18 @@
 
         position: absolute;
     }
+    div.insertDiv{
+        width: 320px;
+        height: 250px;
+        margin-left: 490px;
+        margin-top: 45px;
+        position: absolute;
+    }
 
+    div.insertDiv td{
+        padding: 5px;
+
+    }
 
 
 </style>
@@ -249,6 +285,29 @@
     </div>
 
 
+    <div class="insertDiv">
+        <div class="panel panel-warning addDiv">
+            <div class="panel-heading">新增用户</div>
+            <div class="panel-body">
+                <table class="addTable">
+                    <tr>
+                        <td>用户名:</td>
+                        <td><input type="text" v-model="bean.userAccount"></td>
+                    </tr>
+                    <tr>
+                        <td>密码:</td>
+                        <td><input type="text" v-model="bean.userPassword"></td>
+                    </tr>
+                    <tr class="submitTR">
+                        <td colspan="2" align="center">
+                            <button href="#nowhere" @click="addUser" class="btn btn-success">提交</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <div class="pageDiv" th:fragment="html">
         <nav>
             <ul class="pagination">
@@ -275,8 +334,10 @@
         </nav>
     </div>
 
-</div>
 
+
+
+</div>
 
 
 
