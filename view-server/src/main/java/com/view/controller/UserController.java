@@ -31,12 +31,20 @@ public class UserController {
 
     }
 
+    @PostMapping(value = "/addUser")
+    public Result add(@RequestBody User user){
+        viewUserService.add(user);
+        return new Result(ResultCode.SUCCESS);
+    }
+
 
     @DeleteMapping(value = "/deleteUser/{id}")
     public void delete(@PathVariable(value = "id")  int id){
         viewUserService.deleteUser(id);
 
     }
+
+
 
 
 }
