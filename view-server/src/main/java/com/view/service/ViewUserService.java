@@ -31,6 +31,10 @@ public class ViewUserService {
 
     }
 
+    public void add(User user){
+        clientFeign.add(user);
+    }
+
 
 
 }
