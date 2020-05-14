@@ -32,12 +32,12 @@ public class UserController {
      *存储user，顺便存储redis
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public Result save(@RequestBody User user) {
+    public void add(@RequestBody User user) {
         userService.save(user);
 
         ListOperations listOperations = redisTemplate.opsForList();
         listOperations.leftPush("user", user);
-        return new Result(ResultCode.SUCCESS);
+
 
     }
 
