@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<script src="https://how2j.cn/study/js/jquery/2.0.0/jquery.min.js"></script>
+<link href="https://how2j.cn/study/css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+<script src="https://how2j.cn/study/js/bootstrap/3.3.6/bootstrap.min.js"></script>
+<script src="https://how2j.cn/study/vue.min.js"></script>
+<script src="js/axios/0.17.1/axios.min.js"></script>
+<html xmlns:th="http://www.thymeleaf.org">
+<style>
+    div.alert-info{
+        height: 60px;
+    }
+
+    h3.blogTitle{
+        padding-left: 500px;
+        padding-top: -10px;
+        margin-top: 3px;
+    }
+
+    h1.label{
+        height: 60px;
+        width: 60px;
+    }
+
+    ul.pagination{
+        margin-left: 540px;
+        margin-top: 250px;
+    }
+
+    div.buttonR{
+        float: right;
+        margin-top: -45px;
+    }
+
+    button.label{
+        height: 25px;
+        width: 50px;
+    }
+
+    div.listDataTableDiv{
+        margin-top: 62px;
+    }
+
+    div.nav{
+        margin-bottom: 0px;
+        width: 1500px;
+
+        position: absolute;
+    }
+    div.insertDiv{
+        width: 320px;
+        height: 250px;
+        margin-left: 490px;
+        margin-top: 45px;
+        position: absolute;
+    }
+
+    div.insertDiv td{
+        padding: 5px;
+
+    }
+
+
+
+</style>
+<script>
+
+    //获取地址栏参数的函数
+    function getUrlParms(para){
+        var search=location.search; //页面URL的查询部分字符串
+        var arrPara=new Array(); //参数数组。数组单项为包含参数名和参数值的字符串，如“para=value”
+        var arrVal=new Array(); //参数值数组。用于存储查找到的参数值
+
+        if(search!=""){
+            var index=0;
+            search=search.substr(1); //去除开头的“?”
+            arrPara=search.split("&");
+
+            for(i in arrPara){
+                var paraPre=para+"="; //参数前缀。即参数名+“=”，如“para=”
+                if(arrPara[i].indexOf(paraPre)==0&& paraPre.length<arrPara[i].length){
+                    arrVal[index]=decodeURI(arrPara[i].substr(paraPre.length)); //顺带URI解码避免出现乱码
+                    index++;
+                }
+            }
+        }
+
+        if(arrVal.length==1){
+            return arrVal[0];
+        }else if(arrVal.length==0){
+            return null;
+        }else{
+            return arrVal;
+        }
+    }
+
+    $(function () {
+        var data4Vue={
+            url:'/getUser',
+            bean:''
+
+        };
+        var vue = new Vue({
+            el:'#workingArea',
+            data:data4Vue,
+            mounted:function () {
+                this.get();
+            },
+            methods:{
+                get:function () {
+                    var id = getUrlParms("id");
+                    var url = this.url+"/"+id;
+                    axios.get(url).then(function (response) {
+                           vue.bean = response.data.data;
+                    })
+                },
+                update:function () {
+                    var id = getUrlParms("id");
+                    var url = "/updateUser/"+id;
+                    var userAccount = this.bean.userAccount;
+                    var userPassword = this.bean.userPassword;
+                    axios.put(url,{
+                        userAccount: userAccount,
+                        userPassword: userPassword
+                    }).then(function (response) {
+                        location.href="/admin_user_list";
+                    })
+                }
+            }
+        })
+    });
+
+
+</script>
+<body>
+<div id="workingArea">
+    <div class="alert alert-info">
+        <h3 class="blogTitle">博客后台管理</h3>
+        <div class="buttonR">
+            <button class="label label-success">登陆</button>
+            <button class="label label-danger">退出</button>
+        </div>
+    </div>
+
+    <div class="insertDiv">
+        <div class="panel panel-warning addDiv">
+            <div class="panel-heading">修改用户</div>
+            <div class="panel-body">
+                <table class="addTable">
+                    <tr>
+                        <td>用户名:</td>
+                        <td><input type="text" v-model="bean.userAccount"></td>
+                    </tr>
+                    <tr>
+                        <td>密码:</td>
+                        <td><input type="text" v-model="bean.userPassword"></td>
+                    </tr>
+                    <tr class="submitTR">
+                        <td colspan="2" align="center">
+                            <button href="#nowhere" @click="update" class="btn btn-success">提交</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</div>
+
+
+</body>
