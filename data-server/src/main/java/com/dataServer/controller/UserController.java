@@ -57,13 +57,12 @@ public class UserController {
      *更新user，顺便更新redis
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public Result update(@PathVariable(value = "id") int id, @RequestBody User user) {
+    public void update(@PathVariable(value = "id") int id, @RequestBody User user) {
 
 
         user.setId(id);
         userService.update(user);
-        this.refresh();
-        return new Result(ResultCode.SUCCESS);
+
 
     }
 
@@ -99,16 +98,16 @@ public class UserController {
      *根据Id获取user,先会从redis获取，如果redis没数据，则从数据库获取
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Result get(@PathVariable(value = "id") int id) {
+    public User get(@PathVariable(value = "id") int id) {
 
-        ListOperations listOperations = redisTemplate.opsForList();
+       /* ListOperations listOperations = redisTemplate.opsForList();
         List<User> users = listOperations.range("user", 0, -1);
         List<Integer> ids = new ArrayList<>();
 
         for (User user : users) {
             int id1 = user.getId();
             ids.add(id1);
-        }
+        }*/
 
       /*  if (!ids.contains(id)) {
 
@@ -124,7 +123,7 @@ public class UserController {
         }
 
        */
-        if (users.size() != 0) {
+       /* if (users.size() != 0) {
             for (User user1 : users) {
                 if (!ids.contains(id)) {
                     User user = userService.get(id);
@@ -150,7 +149,11 @@ public class UserController {
             } else {
                 return new Result(ResultCode.FAIL);
             }
-        }
+        }*/
+
+        User user = userService.get(id);
+        return user;
+
     }
 
 
