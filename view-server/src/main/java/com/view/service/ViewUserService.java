@@ -35,6 +35,13 @@ public class ViewUserService {
         clientFeign.add(user);
     }
 
+    public User get(int id){
+       return clientFeign.get(id);
+    }
+
+    public void update(int id,User user){
+        clientFeign.update(id,user);
+    }
 
 
 }
