@@ -106,6 +106,14 @@
         alert("aaa");
     }
 
+    /*打开/关闭 模态框*/
+    function overlay(){
+          var el =  document.getElementById('modal-overlay');
+          el.style.visibility =(el.style.visibility=="visible")?"hidden":"visible";
+          $("#excelFile").val('');
+
+    }
+
     $(function(){
         var data4Vue = {
             uri:'showUsersPage',
@@ -115,7 +123,8 @@
             userPassword:'',*/
             bean:{id:0,userAccount: '',userPassword: ''},
             bean_edit:{id:0,userAccount:'',userPassword:''},
-            pagination:{}
+            pagination:{},
+            file:null
         };
 
         //ViewModel
@@ -231,6 +240,51 @@
 
     }
 
+    /*模态框样式*/
+    #modal-overlay{
+        visibility: hidden;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        z-index: 1000;
+        background-color: #333;
+        opacity: 0.8;
+    }
+
+    .modal-data{
+        width: 500px;
+        height: 180px;
+        margin: 100px auto;
+        background-color: #fff;
+        border: 1px solid #000;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .modal-data button{
+        margin-top: -10px;
+        margin-left: 155px;
+        position: absolute;
+    }
+
+    div.modal-form{
+        margin-top: 50px;
+
+    }
+    span.file{
+        margin-left: -65px;
+        position: absolute;
+    }
+    div.modal-form button{
+       margin-left: -35px;
+        margin-top: 55px;
+        position: absolute;
+    }
+
+
 
 </style>
 
@@ -239,7 +293,7 @@
     <div class="alert alert-info">
         <h3 class="blogTitle">LCP-博客后台管理</h3>
         <div class="buttonR">
-            <button class="label label-success">用户报表上传</button>
+           <button class="label label-success" onclick="overlay()">用户报表上传</button>
             <button class="label label-success">登陆</button>
             <button class="label label-danger">退出</button>
         </div>
@@ -331,6 +385,20 @@
         </nav>
     </div>
 
+    <!--模态框-->
+    <div id="modal-overlay">
+        <div class="modal-data">
+            <button class="label label-danger" onclick="overlay()">X</button>
+            <div class="modal-form">
+            <form action="" method="post" enctype="multipart/form-data">
+
+                <span class="file" id="file"><input type="file" name="selectedFile" id="excelFile"></span>
+                <button class="btn btn-info">上传</button>
+            </form>
+            </div>
+
+        </div>
+    </div>
 
 
 
