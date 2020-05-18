@@ -26,4 +26,10 @@ public class AdminPageController {
         return "admin/listRole";
     }
 
+    @GetMapping(value = "/edit_user")
+    public String edit(){
+        return "admin/editUser";
+    }
+
+
 }
