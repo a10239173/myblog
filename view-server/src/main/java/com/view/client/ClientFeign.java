@@ -27,6 +27,12 @@ public interface ClientFeign {
    @PostMapping(value = "/user")
    public void add(@RequestBody User user);
 
+   @GetMapping(value = "/user/{id}")
+   public User get(@PathVariable(value = "id")int id);
+
+   @PutMapping(value = "/user/{id}")
+   public void update(@PathVariable(value = "id")int id,@RequestBody User user);
+
    /*
    * role角色
    * */
