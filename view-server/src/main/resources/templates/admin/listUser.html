@@ -114,6 +114,7 @@
             /*userAccount:'',
             userPassword:'',*/
             bean:{id:0,userAccount: '',userPassword: ''},
+            bean_edit:{id:0,userAccount:'',userPassword:''},
             pagination:{}
         };
 
@@ -170,11 +171,7 @@
                         vue.list(0);
                        vue.bean = {id:0,userAccount:'',userPassword:''};
                     });
-
-
-
-                }
-
+                },
             }
         });
     });
@@ -240,7 +237,7 @@
 
 <div id="workingArea">
     <div class="alert alert-info">
-        <h3 class="blogTitle">博客后台管理</h3>
+        <h3 class="blogTitle">LCP-博客后台管理</h3>
         <div class="buttonR">
             <button class="label label-success">登陆</button>
             <button class="label label-danger">退出</button>
@@ -265,11 +262,11 @@
             </thead>
             <tbody>
             <tr v-for="bean in beans">
-                <td>{{bean.id}}</td>
-                <td>{{bean.userAccount}}</td>
-                <td>{{bean.userPassword}}</td>
+                <td >{{bean.id}}</td>
+                <td >{{bean.userAccount}}</td>
+                <td >{{bean.userPassword}}</td>
                 <td>
-                    <button class="btn btn-success">修改</button>
+                    <a :href="'/edit_user?id='+bean.id"> <button class="btn btn-success">修改</button></a>
                     <button class="btn btn-danger" @click="deleteUser(bean.id)">删除</button>
                 </td>
             </tr>
@@ -317,13 +314,11 @@
                 <li :class="{ disabled: !pagination.hasPrevious }">
                     <a  href="#nowhere" @click="jump('pre')">‹</a>
                 </li>
-
-                <li  v-for="i in pagination.navigatepageNums">
+                <li  v-for="i in pagination.navigatepageNums" >
                     <a href="#nowhere" @click="jumpByNumber(i-1)" >
                         {{i}}
                     </a>
                 </li>
-
                 <li :class="{ disabled: !pagination.hasNext }">
                     <a  href="#nowhere" @click="jump('next')">›</a>
                 </li>
@@ -331,8 +326,10 @@
                     <a  href="#nowhere" @click="jump('last')"> »</a>
                 </li>
             </ul>
+
         </nav>
     </div>
+
 
 
 
