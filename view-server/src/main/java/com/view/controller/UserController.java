@@ -44,6 +44,20 @@ public class UserController {
 
     }
 
+    @GetMapping(value = "/getUser/{id}")
+    public Result get(@PathVariable(value = "id")int id){
+        User user = viewUserService.get(id);
+        return new Result(ResultCode.SUCCESS,user);
+    }
+
+    @PutMapping(value = "/updateUser/{id}")
+    public Result update(@PathVariable(value = "id")int id,@RequestBody User user){
+
+        viewUserService.update(id,user);
+        return new Result(ResultCode.SUCCESS);
+
+    }
+
 
 
 
